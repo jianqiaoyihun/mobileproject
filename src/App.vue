@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <p class="test">helloworld</p>
     <van-button type="default">默认按钮</van-button>
     <van-button type="primary">主要按钮</van-button>
     <van-button type="info">信息按钮</van-button>
@@ -12,5 +13,7 @@
 export default {}
 </script>
 <style lang="less">
-
+  .test {
+    font-size: 20px
+  }
 </style>
