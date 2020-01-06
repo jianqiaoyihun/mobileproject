@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import jsonBig from 'json-bigint'
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/'
 })
@@ -10,6 +10,15 @@ request.interceptors.request.use(
   }, (error) => {
     return Promise.reject(error)
   })
+
+// 要在axios响应到达拦截之前进行一次转换，
+request.defaults.transformResponse = [function (data) {
+  try {
+    return jsonBig.parse(data)
+  } catch (err) {
+    return {}
+  }
+}]
 // 响应拦截器
 request.interceptors.response.use(
   (response) => {
