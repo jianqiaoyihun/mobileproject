@@ -1,7 +1,7 @@
 import axios from 'axios'
 import jsonBig from 'json-bigint'
 const request = axios.create({
-  baseURL: 'http://ttapi.research.itcast.cn/'
+  baseURL: 'http://ttapi.research.itcast.cn/' // 基础路径
 })
 // 请求拦截器
 request.interceptors.request.use(
