@@ -5,7 +5,9 @@ import { Button,
   CellGroup,
   NavBar,
   Field,
-  Icon } from 'vant'
+  Icon,
+  Toast,
+  CountDown } from 'vant'
 
 Vue
   .use(Button)
@@ -14,3 +16,5 @@ Vue
   .use(NavBar)
   .use(Field)
   .use(Icon)
+  .use(Toast)
+  .use(CountDown)

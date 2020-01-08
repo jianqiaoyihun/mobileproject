@@ -13,10 +13,19 @@
         v-model="user.code"
         left-icon="phone-o"
         placeholder="请输入验证码">
+        <van-count-down
+          v-if="isCountDownShow"
+          slot="button"
+          :time="1000 * 20"
+          format="ss s"
+          @finish="isCountDownShow = false"
+        />
        <van-button slot="button"
+        v-else
         round
         size="small"
         type="primary"
+        @click="getCode"
         >发送验证码</van-button>
       </van-field>
     </van-cell-group>
@@ -28,20 +37,38 @@
 </template>
 
 <script>
-import { login } from '@/api/user'
+import { login, code } from '@/api/user'
+
 export default {
   data () {
     return {
       user: {
         mobile: '',
         code: ''
-      }
+      },
+      isCountDownShow: false
     }
   },
   methods: {
     async onLogin () {
       const user = this.user
-      const res = await login(user)
+      this.$toast.loading({
+        duration: 0,
+        message: '登录中...',
+        forbidClick: true
+      })
+      try {
+        const res = await login(user)
+        console.log(res)
+        this.$toast.success('登录成功')
+      } catch (err) {
+        this.$toast.fail('登录失败')
+      }
+    },
+    async getCode () {
+      this.isCountDownShow = true
+      const mobile = this.user.mobile
+      const res = await code(mobile)
       console.log(res)
     }
   }
