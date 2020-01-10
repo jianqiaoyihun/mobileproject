@@ -7,6 +7,10 @@ const routes = [
   {
     path: '/login',
     component: () => import('@/views/login')
+  },
+  {
+    path: '/',
+    redirect: '/login'
   }
 ]
 
