@@ -46,8 +46,8 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       isCountDownShow: false
     }
@@ -84,8 +84,8 @@ export default {
 
       // 请求登录
       try {
-        const res = await login(user)
-        console.log(res)
+        const { data } = await login(user)
+        this.$store.commit('setUser', data.data)
         this.$toast.success('登录成功')
         this.$router.push('/')
       } catch (err) {
