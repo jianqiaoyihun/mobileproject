@@ -15,3 +15,10 @@ export const code = mobile => {
     url: `/app/v1_0/sms/codes/${mobile}`
   })
 }
+
+//  获取登录用户的信息
+export const getUser = () => {
+  return request({
+    url: '/app/v1_0/user'
+  })
+}

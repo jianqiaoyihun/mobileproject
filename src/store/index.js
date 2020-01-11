@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getItem, setItem } from '@/utils/storage'
+import { getItem, setItem, removeItem } from '@/utils/storage'
 Vue.use(Vuex)
 const USER_KEY = 'user'
 export default new Vuex.Store({
@@ -12,6 +12,9 @@ export default new Vuex.Store({
     setUser (state, data) {
       state.user = data
       setItem(USER_KEY, state.user)
+    },
+    remUser () {
+      removeItem(USER_KEY)
     }
   },
   actions: {
