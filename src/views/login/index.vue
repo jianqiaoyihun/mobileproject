@@ -87,6 +87,7 @@ export default {
         const res = await login(user)
         console.log(res)
         this.$toast.success('登录成功')
+        this.$router.push('/')
       } catch (err) {
         this.$toast.fail('登录失败')
       }
