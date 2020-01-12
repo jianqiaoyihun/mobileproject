@@ -9,6 +9,10 @@ const routes = [
     component: () => import('@/views/login')
   },
   {
+    path: '/user/:userId',
+    component: () => import('@/views/user')
+  },
+  {
     path: '/',
     component: () => import('@/views/tabbar'),
     children: [
