@@ -1,7 +1,18 @@
 <template>
   <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="首页" fixed  />
+    <van-nav-bar title="首页" fixed  >
+      <!-- <van-button
+        class="search-button"
+        slot="right"
+        round
+        type="info"
+        size="mini"
+        @click="$router.push('/search')"
+        >搜索</van-button
+      > -->
+      <van-icon name="search" slot="right" class="search-button" round  @click="$router.push('/search')" />
+    </van-nav-bar>
     <!-- /导航栏 -->
 
     <!-- 频道列表 -->
