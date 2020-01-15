@@ -19,7 +19,8 @@ import { Button,
   Tabs,
   PullRefresh,
   Popup,
-  Search } from 'vant'
+  Search,
+  Loading } from 'vant'
 
 Vue
   .use(Button)
@@ -42,3 +43,4 @@ Vue
   .use(PullRefresh)
   .use(Popup)
   .use(Search)
+  .use(Loading)

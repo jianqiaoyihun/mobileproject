@@ -90,6 +90,7 @@ export default {
     },
     onCancel () {
       this.isSearchResultShow = false
+      this.$router.back()
     },
     // debounce 函数
     // 参数1：函数

@@ -8,6 +8,9 @@ import './utils/validations'
 import './utils/register-vant.js'
 import 'amfe-flexible'
 import './styles/index.less'
+
+// 加载初始日期时间库
+import './utils/datetime'
 Vue.config.productionTip = false
 
 new Vue({

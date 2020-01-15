@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getItem, setItem, removeItem } from '@/utils/storage'
+import decodeJwt from 'jwt-decode'
 Vue.use(Vuex)
 const USER_KEY = 'user'
 export default new Vuex.Store({
@@ -10,6 +11,9 @@ export default new Vuex.Store({
   },
   mutations: {
     setUser (state, data) {
+      if (data && data.token) {
+        data.id = decodeJwt(data.token).user_id
+      }
       state.user = data
       setItem(USER_KEY, state.user)
     },
