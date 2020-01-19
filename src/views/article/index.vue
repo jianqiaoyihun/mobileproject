@@ -46,8 +46,12 @@
           @click="onFollowed"
         >{{ articleList.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
-      <div class="markdown-body" v-html="articleList.content">
-      </div>
+      <!-- 文章内容 -->
+      <div class="markdown-body" v-html="articleList.content"></div>
+      <div style="text-align:center;margin: 50px 0;color:#969799;font-size:18px">正文结束</div>
+      <div style="font-size:18px;margin-bottom:20px">全部评论</div>
+      <!-- 文章评论 -->
+      <article-comment :article-id="articleId" ref="article-comment" />
     </div>
     <!-- /文章详情 -->
 
@@ -71,6 +75,7 @@
         type="default"
         round
         size="small"
+        @click="isPostShow = true"
       >写评论</van-button>
       <van-icon
         class="comment-icon"
@@ -90,12 +95,31 @@
       <van-icon class="share-icon" name="share" />
     </div>
     <!-- /底部区域 -->
+
+    <!-- 发布文章评论 -->
+    <van-popup
+      v-model="isPostShow"
+      position="bottom"
+      :style="{ height: '20%' }"
+    >
+    <!--
+        在组件上使用 v-model
+          :value="postMessage"
+          @input="postMessage = 事件参数"
+        本质还是父子通信
+       -->
+    <post-comment @click-post="onPost" v-model="postMessage"></post-comment>
+    </van-popup>
+    <!-- /发布文章评论 -->
   </div>
 </template>
 
 <script>
 import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
 import { followUser, unfollowUser } from '@/api/user'
+import ArticleComment from './components/article-comment'
+import PostComment from './components/post-comment'
+import { addComment } from '@/api/comments'
 // vuex 模块提供了一些辅助方法，专门用来让我们更方便的获取容器中的数据
 // mapState：映射获取 state 数据
 // mapMutation：映射获取 mutation 数据
@@ -103,7 +127,10 @@ import { followUser, unfollowUser } from '@/api/user'
 import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
-  components: {},
+  components: {
+    ArticleComment,
+    PostComment
+  },
   props: {
     articleId: {
       type: String,
@@ -114,7 +141,9 @@ export default {
     return {
       articleList: {},
       loading: false,
-      isFollowLoading: false
+      isFollowLoading: false,
+      isPostShow: false,
+      postMessage: ''
     }
   },
   computed: {
@@ -195,7 +224,31 @@ export default {
         console.log(err)
       }
       this.isFollowLoading = false
+    },
+    async onPost () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '发布中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        const { data } = await addComment({
+          target: this.articleId,
+          content: this.postMessage
+        })
+        // 清空文本框
+        this.postMessage = ''
+        // 关闭弹层
+        this.isPostShow = false
+        // 将数据添加到列表顶部
+        this.$refs['article-comment'].list.unshift(data.data.new_obj)
+        this.$toast.success('发布成功')
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('发布失败')
+      }
     }
+
   }
 }
 </script>
