@@ -51,7 +51,7 @@
       <div style="text-align:center;margin: 50px 0;color:#969799;font-size:18px">正文结束</div>
       <div style="font-size:18px;margin-bottom:20px">全部评论</div>
       <!-- 文章评论 -->
-      <article-comment :article-id="articleId" ref="article-comment" />
+      <article-comment :article-id="articleId" ref="article-comment" @click-reply="onReplyShow" />
     </div>
     <!-- /文章详情 -->
 
@@ -111,6 +111,15 @@
     <post-comment @click-post="onPost" v-model="postMessage"></post-comment>
     </van-popup>
     <!-- /发布文章评论 -->
+     <!-- 评论回复 -->
+    <van-popup
+      v-model="isReplyShow"
+      position="bottom"
+      style="height: 90%"
+    >
+       <comment-reply :comment="currentComment" :article-id="articleId" />
+    </van-popup>
+    <!-- /评论回复 -->
   </div>
 </template>
 
@@ -119,6 +128,7 @@ import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '
 import { followUser, unfollowUser } from '@/api/user'
 import ArticleComment from './components/article-comment'
 import PostComment from './components/post-comment'
+import CommentReply from './components/comment-reply'
 import { addComment } from '@/api/comments'
 // vuex 模块提供了一些辅助方法，专门用来让我们更方便的获取容器中的数据
 // mapState：映射获取 state 数据
@@ -129,7 +139,8 @@ export default {
   name: 'ArticlePage',
   components: {
     ArticleComment,
-    PostComment
+    PostComment,
+    CommentReply
   },
   props: {
     articleId: {
@@ -143,7 +154,9 @@ export default {
       loading: false,
       isFollowLoading: false,
       isPostShow: false,
-      postMessage: ''
+      postMessage: '',
+      isReplyShow: false, // 展示评论回复弹层
+      currentComment: {} // 点击回复的那个评论项
     }
   },
   computed: {
@@ -247,6 +260,12 @@ export default {
         console.log(err)
         this.$toast.fail('发布失败')
       }
+    },
+    onReplyShow (comment) {
+      // 将点击回复所在的评论对象记录起来
+      this.currentComment = comment
+      // 展示回复的弹层
+      this.isReplyShow = true
     }
 
   }
