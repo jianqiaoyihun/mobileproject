@@ -46,3 +46,10 @@ export const unfollowUser = target => {
     url: `/app/v1_0/user/followings/${target}`
   })
 }
+// 获取用户资料
+export const getUserProfile = () => {
+  return request({
+    method: 'GET',
+    url: '/app/v1_0/user/profile'
+  })
+}

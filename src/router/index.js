@@ -20,6 +20,12 @@ const routes = [
     path: '/search',
     component: () => import('@/views/search')
   },
+  // 要注意路由匹配的优先级，从上到下
+  {
+    path: '/user/profile',
+    name: 'user-profile',
+    component: () => import('@/views/user-profile')
+  },
   {
     path: '/user/:userId',
     component: () => import('@/views/user')
