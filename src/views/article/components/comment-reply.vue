@@ -1,7 +1,7 @@
 <template>
   <div class="comment-reply">
     <van-nav-bar :title="`${comment.reply_count} 条回复`">
-      <van-icon slot="left" name="cross" />
+      <van-icon slot="left" name="cross" @click="$emit('close')"/>
     </van-nav-bar>
     <!-- 当前评论 -->
     <comment-item :comment="comment" />
@@ -83,12 +83,14 @@ export default {
   methods: {
     async onLoad () {
       // 1. 请求获取数据
+      console.log(123)
       const { data } = await getComments({
         type: 'c',
         source: this.comment.com_id.toString(), // 源id，文章id或评论id
         offset: this.offset,
         limit: this.limit
       })
+      console.log(data)
       // 2. 将数据添加到列表
       const { results } = data.data
       this.list.push(...results)

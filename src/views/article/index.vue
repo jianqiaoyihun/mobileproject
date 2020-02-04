@@ -117,7 +117,7 @@
       position="bottom"
       style="height: 90%"
     >
-       <comment-reply :comment="currentComment" :article-id="articleId" />
+      <comment-reply :comment="currentComment" :article-id="articleId" @close="guanbi"/>
     </van-popup>
     <!-- /评论回复 -->
   </div>
@@ -266,6 +266,9 @@ export default {
       this.currentComment = comment
       // 展示回复的弹层
       this.isReplyShow = true
+    },
+    guanbi () {
+      this.isReplyShow = false
     }
 
   }

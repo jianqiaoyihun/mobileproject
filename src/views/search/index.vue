@@ -17,7 +17,7 @@
     <search-result v-if="isSearchResultShow" :q="searchContent"></search-result>
     <!-- 联想建议 -->
     <van-cell-group v-else-if="searchContent">
-      <van-cell :title="item" icon="search" v-for="(item,index) in suggestions" :key="index">
+      <van-cell :title="item" icon="search" v-for="(item,index) in suggestions" :key="index" @click="onSearch(item)">
         <div slot="title" v-html="highlight(item)"></div>
       </van-cell>
 
