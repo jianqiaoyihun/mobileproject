@@ -15,7 +15,7 @@
         />
       </van-cell>
       <input ref="file" type="file" hidden @change="onFileChange">
-      <van-cell is-link title="昵称" :value="user.name" />
+      <van-cell is-link title="昵称" :value="user.name" @click="isEditNameShow = true" />
       <van-cell is-link title="介绍" value="内容" />
       <van-cell is-link title="性别" :value="user.gender === 0 ? '男' : '女' " />
       <van-cell is-link title="生日" :value="user.birthday" />
@@ -31,11 +31,42 @@
       />
     </van-image-preview>
     <!-- /头像预览 -->
+    <!-- 修改用户昵称 -->
+    <van-popup
+      v-model="isEditNameShow"
+      position="bottom"
+    >
+      <van-nav-bar
+        title="编辑昵称"
+        left-text="取消"
+        right-text="确定"
+        @click-left="isEditNameShow = false"
+        @click-right="onUpdateName"
+      />
+      <div>
+      <!--
+          field 组件有一个 value 事件，该事件接收一个参数：输入框的值
+          在模板中 $event 表示事件参数，Vue 本身提供的
+          关于 $event 的参考链接：https://cn.vuejs.org/v2/guide/events.html#%E5%86%85%E8%81%94%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95
+         -->
+      <van-field
+          :value="user.name"
+          @input="inputName = $event"
+          rows="2"
+          autosize
+          type="textarea"
+          maxlength="20"
+          placeholder="请输入昵称"
+          show-word-limit
+        />
+      </div>
+    </van-popup>
+    <!-- /修改用户昵称 -->
   </div>
 </template>
 
 <script>
-import { getUserProfile, updateUserPhoto } from '@/api/user'
+import { getUserProfile, updateUserPhoto, updateUserProfile } from '@/api/user'
 export default {
   name: 'UserProfile',
   components: {},
@@ -44,7 +75,9 @@ export default {
     return {
       user: {}, // 用户资料
       isPreviewShow: false,
-      images: [] // 预览的图片列表
+      images: [], // 预览的图片列表
+      isEditNameShow: false,
+      inputName: '' // 输入框的数据
     }
   },
   computed: {
@@ -92,7 +125,11 @@ export default {
     async onUpdateAvatar () {
       // 1. 构造包含文件数据的表单对象 FormData
       // 注意：含有文件的数据务必要放到 FormData 中
+      // FormData: 用代码构造一个表单对象，主要目的是用于异步发送文件上传
+      // MDN-FormData 对象的使用：https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/Using_FormData_Objects
       const fd = new FormData()
+      // 参数1：后端要求的数据字段名称
+      // 参数2：数据值
       fd.append('photo', this.file.files[0])
 
       this.$toast.loading({
@@ -116,6 +153,32 @@ export default {
         console.log(err)
         this.$toast.fail('更新失败')
       }
+    },
+    // field: 要修改的数据字段
+    // value：数据值
+    async updateUserProfile (field, value) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '更新中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        await updateUserProfile({
+          [field]: value // 注意属性名使用中括号包裹，否则会当做字符串来使用而不是变量
+        })
+        this.$toast.success('更新成功')
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('更新失败')
+      }
+    },
+    async onUpdateName () {
+      // 请求提交表单
+      await this.updateUserProfile('name', this.inputName)
+      // 更新视图
+      this.user.name = this.inputName
+      // 关闭弹层
+      this.isEditNameShow = false
     }
   }
 }
@@ -134,6 +197,14 @@ export default {
     bottom: 0;
     .van-nav-bar {
       background: #000;
+    }
+  }
+  .van-popup {
+    /deep/ .van-nav-bar {
+      background: #fff;
+      .van-nav-bar__title {
+        color: #323233;
+      }
     }
   }
 }
