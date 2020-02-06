@@ -51,7 +51,23 @@ const routes = [
         component: () => import('@/views/my')
       }
     ]
+  },
+  { // 我的作品
+    path: '/my-article/:type?',
+    name: 'my-article',
+    component: () => import('@/views/user-articles'),
+    props: true
   }
+  // { // 我的收藏
+  //   path: '/my-article/collect',
+  //   name: 'my-article-collect',
+  //   component: () => import('@/views/user-articles')
+  // },
+  // { // 我的历史
+  //   path: '/my-article/history',
+  //   name: 'my-article-history',
+  //   component: () => import('@/views/user-articles')
+  // }
 ]
 
 const router = new VueRouter({
