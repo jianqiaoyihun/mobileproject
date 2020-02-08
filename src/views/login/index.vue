@@ -4,7 +4,7 @@
     <van-nav-bar title="登录"/>
     <!-- 表单信息 -->
     <ValidationObserver ref="myform">
-      <ValidationProvider name="手机号" immediate rules="required|mobile" v-slot="{ errors }">
+      <ValidationProvider name="手机号" immediate rules="required|mobile">
         <van-field
           v-model="user.mobile"
           left-icon="phone-o"
@@ -87,7 +87,9 @@ export default {
         const { data } = await login(user)
         this.$store.commit('setUser', data.data)
         this.$toast.success('登录成功')
-        this.$router.push('/')
+        // 如果有 redirect 则跳转到来源页，没有就跳转到首页
+        const redirect = this.$route.query.redirect || '/'
+        this.$router.push(redirect)
       } catch (err) {
         this.$toast.fail('登录失败')
       }
