@@ -43,7 +43,7 @@
 
 <script>
 import searchResult from './components/search-result'
-import { getSuggestions, getSearch } from '@/api/search'
+import { getSuggestions } from '@/api/search'
 import { debounce } from 'lodash'
 import { getItem, setItem } from '@/utils/storage'
 export default {
