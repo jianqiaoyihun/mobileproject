@@ -7,7 +7,8 @@ const USER_KEY = 'user'
 export default new Vuex.Store({
   state: {
     // user: null // 用来存储令牌，要么是null，要么是一个对象
-    user: getItem(USER_KEY)
+    user: getItem(USER_KEY),
+    cachePages: ['TabBar']
   },
   mutations: {
     setUser (state, data) {
@@ -19,6 +20,21 @@ export default new Vuex.Store({
     },
     remUser () {
       removeItem(USER_KEY)
+    },
+
+    // 添加缓存页面
+    addCachePage (state, name) {
+      if (!state.cachePages.includes(name)) {
+        state.cachePages.push(name)
+      }
+    },
+
+    // 移除缓存页面
+    removeCachePage (state, name) {
+      const index = state.cachePages.indexOf(name)
+      if (index !== -1) {
+        state.cachePages.splice(index)
+      }
     }
   },
   actions: {

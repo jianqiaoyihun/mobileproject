@@ -3,7 +3,7 @@
     <van-nav-bar
       title="编辑资料"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="$router.replace('/my')"
     />
 
     <van-cell-group>

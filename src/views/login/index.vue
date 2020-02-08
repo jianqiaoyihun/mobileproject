@@ -89,7 +89,7 @@ export default {
         this.$toast.success('登录成功')
         // 如果有 redirect 则跳转到来源页，没有就跳转到首页
         const redirect = this.$route.query.redirect || '/'
-        this.$router.push(redirect)
+        this.$router.replace(redirect)
       } catch (err) {
         this.$toast.fail('登录失败')
       }
